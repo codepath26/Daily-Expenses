@@ -1,8 +1,8 @@
 import React, {  useState } from "react";
-import { useGlobalContext } from "../../Context/globalContext";
 
-function Form() {
-  const { addIncome } = useGlobalContext();
+
+function Form({addData , heading1}) {
+
 
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState();
@@ -13,11 +13,11 @@ function Form() {
 
   const handleSubmit = (e) => {
     
-    console.log(addIncome)
+    console.log(addData)
     e.preventDefault();
     console.log(title,amount,date,category,description);
-    const income = { title, amount, description, category, date }
-    addIncome(income);
+    const storeData = { title, amount, description, category, date }
+    addData(storeData);
     setAmount('');
     setTitle('');
     setDate('');
@@ -34,7 +34,7 @@ function Form() {
           className="w-full h-full border-2 border-white bg-gray-100  ps-2 rounded-[3px]"
           type="text"
           value={title}
-          placeholder="Income Source"
+          placeholder={`${heading1} Source`}
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
@@ -44,7 +44,7 @@ function Form() {
           className="w-full h-full border-2 border-white bg-gray-100  ps-2 rounded-[3px]"
           type="number"
           value={amount}
-          placeholder="Income Amount"
+          placeholder={`${heading1} Amount`}
           onChange={(e) => setAmount(e.target.value)}
         />
       </div>
@@ -56,7 +56,6 @@ function Form() {
           value={date}
           placeholder="Enter a Date"
           selected={date}
-          // dateFormate="dd/MM/yyyy"
           onChange={(e) => setDate(e.target.value)}
         />
       </div>
@@ -72,13 +71,32 @@ function Form() {
           <option value="" disabled>
             Select Option
           </option>
-          <option value="freelancing">Freelancing</option>
-          <option value="investments">Investiments</option>
-          <option value="stocks">Stocks</option>
-          <option value="bitcoin">Bitcoin</option>
-          <option value="bank">Bank Transfer</option>
-          <option value="youtube">Youtube</option>
-          <option value="other">Other</option>
+          {
+           heading1 === "Income" ? (
+            <>
+            <option value="Freelancing">Freelancing</option>
+            <option value="Investments">Investiments</option>
+            <option value="Stocks">Stocks</option>
+            <option value="Bitcoin">Bitcoin</option>
+            <option value="Bank">Bank Transfer</option>
+            <option value="Youtube">Youtube</option>
+            <option value="Other">Other</option>
+            </>
+           ) : (
+            <>
+            <option value="" disabled >Select Option</option>
+            <option value="Education">Education</option>
+            <option value="Groceries">Groceries</option>
+            <option value="Health">Health</option>
+            <option value="Subscriptions">Subscriptions</option>
+            <option value="Takeaways">Takeaways</option>
+            <option value="Clothing">Clothing</option>  
+            <option value="Travelling">Travelling</option>  
+            <option value="Other">Other</option>  
+            </>
+           )
+          }
+         
         </select>
       </div>
       <div className="rounded-[2px] mt-2">

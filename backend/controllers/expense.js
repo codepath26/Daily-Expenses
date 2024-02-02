@@ -11,8 +11,8 @@ export const addExpense = async (req, res) => {
       date,
     });
 
-    await expense.save();
-    res.status(200).json({ message: "Expense Added" });
+    const newExpense = await expense.save();
+    res.status(200).json({ expense : newExpense   });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "something went Wrong" });
