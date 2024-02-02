@@ -1,19 +1,28 @@
-import React from 'react'
-import Chart from '../Chart/Chart'
+import React, { useEffect } from "react";
+import Leftside from "../Dashboard/Leftside";
+import Rightside from "../Dashboard/Rightside";
+import { useGlobalContext } from "../../Context/globalContext";
 
 function Dashboard() {
+  const { getIncomes, getExpenses } = useGlobalContext();
+
+  useEffect(() => {
+    const getdata = async () => {
+      getIncomes();
+      getExpenses();
+    };
+
+    getdata();
+  },[getIncomes, getExpenses]);
   return (
-    <div>
-      <div>
-        <h1>All Transaction</h1>
-        <div>
-          <div>
-            <Chart/>
-          </div>
-        </div>
+    <>
+      <h1 className="m-2 text-[2vw] font-[600] text-purple-800 md:text-start text-center">Dashboard</h1>
+      <div className="flex flex-wrap flex-col md:items-start items-center w-[100%] border md:flex-row">
+        <Leftside />
+        <Rightside />
       </div>
-    </div>
-  )
+    </>
+  );
 }
 
-export default Dashboard
+export default Dashboard;
