@@ -5,7 +5,6 @@ import React, { useState } from "react";
 
 function App() {
   const [active , setActive] = useState(1);
-  const [layout , setLayout] = useState('row');
   
   const activeHandler = (id)=>{
     console.log("active handler claaed")
