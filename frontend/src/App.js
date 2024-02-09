@@ -16,9 +16,8 @@ function App() {
   // }
   return (
       <>
-    
       <MovingBackground/>
-      <div className={`w-screen md:h-screen scroll-y-auto scroll-smooth  md:m-0 m-1 flex   transition-all md:flex-row flex-col md:flex-nowrap flex-wrap duration-500 bg-gray-300`}>
+      <div className={`p-3 border border-red-700 flex md:flex-row flex-col w-full md:h-screen overflow-hidden`}>
         <Left active={active} activeHandler={activeHandler} />
         <Right active={active}/>
       </div>
@@ -28,3 +27,5 @@ function App() {
 }
 
 export default App;
+
+// className={`md:w-screen md:h-screen overflow-y-scroll scroll-smooth md:overflow-y-hidden md:m-0 m-1 flex transition-all md:flex-row flex-col md:flex-nowrap flex-wrap duration-500 bg-gray-300 container`}
