@@ -6,9 +6,9 @@ function Left({active,activeHandler ,changeLayout}) {
 
 
   return (
-    <div className=" md:w-[20%] w-[90%] m-auto relative  border-[3px] border-white bg-gray-100 bg-opacity-80  md:m-4 rounded-[20px]">
-      <div className="md:h-[100px] flex  md:justify-normal justify-center md:flex-row flex-col items-center gap-[1rem] ps-2">
-        <div className="w-[80px] h-[80px] rounded-full border bg-pink-100  shadow-md">
+    <div className=" md:w-[20%] w-full md:h-[100vh] relative  border-[3px]  border-white bg-gray-200   rounded-[20px]">
+      <div className="flex  md:justify-normal justify-center md:flex-row flex-col items-center gap-[1rem] md:ps-2">
+        <div className="w-[80px] h-[80px]  rounded-full border bg-pink-100  shadow-md">
           <img
             className="object-cover h-full w-full"
             src={process.env.PUBLIC_URL + "/Images/man.png"}
@@ -20,7 +20,7 @@ function Left({active,activeHandler ,changeLayout}) {
           <p className="font-thin">Your Money</p>
         </div>
       </div>
-      <ul className="flex md:flex-col flex-wrap ps-2 md:mt-4 my-4  ">
+      <ul className="flex md:flex-col flex-col sm:flex-row flex-wrap ps-2 md:mt-4 my-4  ">
         {
           navItems.map((item)=>{
             const classNames = `${
@@ -35,16 +35,18 @@ function Left({active,activeHandler ,changeLayout}) {
           })
         }
       </ul>
-      {/* <div>
+       {/* <div>
             <button className='bg-red-500 border border-black p-2 rounded' onClick={changeLayout}>Change Layout</button>
           </div> */}
-      <div className="border md:m-0  md:text-start text-center my-4 md:absolute  w-full bottom-5 ps-2">
+      <div className="md:m-0  md:text-start text-center my-4   w-full bottom-5 ps-2">
         <li className="md:m-0 mx-auto">
           {signout} Sign Out
         </li>
-      </div>
+      </div> 
     </div>
   );
 }
 
 export default Left;
+
+// md:w-[20%] w-[90%]  relative  border-[3px] border-white bg-gray-100 bg-opacity-80  md:m-4 rounded-[20px]

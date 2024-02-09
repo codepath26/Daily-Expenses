@@ -87,7 +87,8 @@ export const GlobalContextProvider = ({ children }) => {
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/expense`
       );
-      // console.log(response.data);
+
+       console.log("this  is data i got", response.data);
       setExpenses(response.data);
       const FetchtotalExpenses = response.data.reduce(
         (acc, expense) => acc + expense.amount,
