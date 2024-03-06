@@ -4,25 +4,26 @@ import Right from "./components/Right/Right.js";
 import React, { useState } from "react";
 
 function App() {
-  const [active , setActive] = useState(1);
-  
-  const activeHandler = (id)=>{
-    console.log("active handler claaed")
+  // console.log(window);
+  const [active, setActive] = useState(1);
+  const activeHandler = (id) => {
+    console.log("active handler claaed");
     setActive(id);
-  }
+  };
   // const changeLayout = ()=>{
 
   //   setLayout(prev => prev === "row" ? "flex-row-reverse" : "flex-row");
   // }
   return (
-      <>
-      <MovingBackground/>
-      <div className={`p-3 border border-red-700 flex md:flex-row flex-col w-full md:h-screen overflow-hidden`}>
+    <>
+      <MovingBackground />
+      <div
+        className={`p-3 border border-red-700 flex md:flex-row flex-col w-full md:h-screen overflow-hidden`}
+      >
         <Left active={active} activeHandler={activeHandler} />
-        <Right active={active}/>
+        <Right active={active} />
       </div>
-      
-      </>
+    </>
   );
 }
 
