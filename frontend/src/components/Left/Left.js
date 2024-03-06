@@ -1,20 +1,10 @@
-import { navItems } from "../../utils/navItems";
+import { useGlobalContext } from "../../Context/globalContext";
 import { signout } from "../../utils/icons";
-import { useState } from "react";
 import PaymentGate from "../PremiumUser/PaymentGate";
+import { NavLink } from "react-router-dom";
 
-function Left({ active, activeHandler, changeLayout }) {
-  const [isPremium, setIsPremium] = useState(false);
-  // const [error, setError] = useState(false);
-
-  // const onSuccess = () => {
-  //   localStorage.setItem("ispremium", true);
-  //   setIsPremium(true);
-  // };
-  // const onError = () => {
-  //   setError(true);
-  //   alert("something went wrong");
-  // };
+function Left() {
+  const { isPremium } = useGlobalContext();
 
   return (
     <div className=" md:w-[20%] w-full md:h-[100vh] relative  border-[3px]  border-white bg-gray-200   rounded-[20px]">
@@ -31,31 +21,97 @@ function Left({ active, activeHandler, changeLayout }) {
           <p className="font-thin">Your Money</p>
         </div>
       </div>
+      <div className="m-1  p-1 ">{!isPremium && <PaymentGate />}</div>
       <ul className="flex md:flex-col  flex-col sm:flex-row flex-wrap ps-2 md:mt-4 my-4  ">
-        {navItems.map((item) => {
-          const classNames = `${
-            active === item.id
-              ? " relative  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
-              : ""
-          }  px-2 my-2  text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer `;
-          console.log(active, item.id);
-          return (
-            <li
-              className={classNames}
-              key={item.id}
-              onClick={() => {
-                activeHandler(item.id);
-              }}
-            >
-              {item.icon}
-              <span className="ms-1">{item.title}</span>
-            </li>
-          );
-        })}
+        <NavLink
+          className={({ isActive }) =>
+            `px-2 my-2  text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
+              isActive
+                ? "relative  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
+                : ""
+            }`
+          }
+          to="/deshboard"
+        >
+          {" "}
+          Dasboard{" "}
+        </NavLink>
+        {isPremium && (
+          <NavLink
+            className={({ isActive }) =>
+              `px-2 my-2  text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
+                isActive
+                  ? "relative  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
+                  : ""
+              }`
+            }
+            to="/transaction"
+          >
+            {" "}
+            Transaction{" "}
+          </NavLink>
+        )}
+        <NavLink
+          className={({ isActive }) =>
+            `px-2 my-2  text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
+              isActive
+                ? "relative  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
+                : ""
+            }`
+          }
+          to="/income"
+        >
+          {" "}
+          Income{" "}
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            `px-2 my-2  text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
+              isActive
+                ? "relative  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
+                : ""
+            }`
+          }
+          to="/expenses"
+        >
+          {" "}
+          Expenses{" "}
+        </NavLink>
+        {isPremium && (
+          <NavLink
+            className={({ isActive }) =>
+              `px-2 my-2  text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
+                isActive
+                  ? "relative  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
+                  : ""
+              }`
+            }
+            to="/leaderboard"
+          >
+            {" "}
+            Leaderboard{" "}
+          </NavLink>
+        )}
+
+        {isPremium && (
+          <NavLink
+            className={({ isActive }) =>
+              `px-2 my-2  text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
+                isActive
+                  ? "relative  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
+                  : ""
+              }`
+            }
+            to="/download"
+          >
+            {" "}
+            Download Expenses{" "}
+          </NavLink>
+        )}
       </ul>
-      {!isPremium && <PaymentGate />}
-      <div className="md:m-0  md:text-start text-center my-4   w-full bottom-5 ps-2">
-        <li className="md:m-0 mx-auto">{signout} Sign Out</li>
+
+      <div className="md:m-0   text-center my-4  absolute   w-full bottom-5 ">
+        <li className="md:m-0 ">{signout} Sign Out</li>
       </div>
     </div>
   );
@@ -64,3 +120,26 @@ function Left({ active, activeHandler, changeLayout }) {
 export default Left;
 
 // md:w-[20%] w-[90%]  relative  border-[3px] border-white bg-gray-100 bg-opacity-80  md:m-4 rounded-[20px]
+
+//  {
+//    navItems.map((item) => {
+//      const classNames = `${
+//        active === item.id
+//          ? " relative  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
+//          : ""
+//      }  px-2 my-2  text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer `;
+//      console.log(active, item.id);
+//      return (
+//        <li
+//          className={classNames}
+//          key={item.id}
+//          onClick={() => {
+//            activeHandler(item.id);
+//          }}
+//        >
+//          {item.icon}
+//          <span className="ms-1">{item.title}</span>
+//        </li>
+//      );
+//    });
+//  }

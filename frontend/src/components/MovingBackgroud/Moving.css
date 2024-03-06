@@ -1,11 +1,11 @@
 .moving-bg {
   width: 100vh;
-  height: 100vh;
+  height: 50vh;
   position: absolute;
   border-radius: 50%;
   margin-left: -37vh;
   margin-top: -37vh;
-  background: linear-gradient(180deg, #cc4797  0%, #f01b9b 100%);
+  background: linear-gradient(180deg, #cc4797 0%, #f01b9b 100%);
   filter: blur(400px);
   animation: move 15s alternate linear infinite;
 }
@@ -15,7 +15,7 @@
     transform: translate(0, 0);
   }
   50% {
-    transform: translate(100vw,50vh);
+    transform: translate(100vw, 50vh);
   }
   100% {
     transform: translate(0, 0);

@@ -35,7 +35,14 @@ function PaymentGate() {
     const rzp1 = new window.Razorpay(options);
     rzp1.open();
   };
-  return <button onClick={paymentHandler}>Premium User</button>;
+  return (
+    <button
+      onClick={paymentHandler}
+      className="border-b border-red-500 text-purple-700 hover:text-purple-800 font-bold   transition-all duration-300 hover:translate-x-1"
+    >
+      Premium User? <span className="">Try it's Free </span>
+    </button>
+  );
 }
 
 export default PaymentGate;
