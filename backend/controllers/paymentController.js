@@ -40,15 +40,15 @@ export const paymentVerification = async (req, res) => {
         razorpay_signature,
       });
 
-      // res.redirect(
-      //   `${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`
-      // );
-      res
-        .status(200)
-        .json({
-          message: "payment successfull",
-          referenceId: razorpay_payment_id,
-        });
+      res.redirect(
+        `${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`
+      );
+      // res
+      //   .status(200)
+      //   .json({
+      //     message: "payment successfull",
+      //     referenceId: razorpay_payment_id,
+      //   });
     }
   } catch (error) {
     console.log(error);

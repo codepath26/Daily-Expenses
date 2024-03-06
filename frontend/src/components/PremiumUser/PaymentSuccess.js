@@ -1,11 +1,15 @@
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 
 function PaymentSuccess() {
-  // const location = useLocation();
-  // const query = new
+  const queryData = useSearchParams()[0];
+  const p = queryData.get("reference");
+
+  console.log("this is the params");
+  console.log(p);
   return (
     <>
-      <h1>this is the reffernce numeer</h1>
+      <h1>This is the reffernce Number {p}</h1>
     </>
   );
 }

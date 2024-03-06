@@ -8,8 +8,13 @@ export const GlobalContextProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
+  const [isPremium, setIsPremium] = useState(false);
 
   //  income Handlers
+
+  const premiumUserHandler = () => {
+    setIsPremium(true);
+  };
 
   const addIncome = async (income) => {
     try {
@@ -88,7 +93,7 @@ export const GlobalContextProvider = ({ children }) => {
         `${process.env.REACT_APP_BASE_URL}/expense`
       );
 
-       console.log("this  is data i got", response.data);
+      console.log("this  is data i got", response.data);
       setExpenses(response.data);
       const FetchtotalExpenses = response.data.reduce(
         (acc, expense) => acc + expense.amount,
@@ -130,6 +135,8 @@ export const GlobalContextProvider = ({ children }) => {
     <GlobalContext.Provider
       value={{
         addIncome,
+        isPremium,
+        premiumUserHandler,
         getIncomes,
         incomes,
         deleteIncome,
