@@ -1,4 +1,5 @@
 import IncomeModel from "../models/IncomeModel.js";
+import User from "../models/userModel.js";
 
 export const addIncome = async (req, res) => {
   try {
@@ -12,6 +13,8 @@ export const addIncome = async (req, res) => {
       date,
       userId: req.user._id,
     });
+    req.user.totalIncomes = req.user.totalIncomes + parseInt(amount);
+    req.user.save();
 
     const newincome = await income.save();
     console.log(newincome);
@@ -39,6 +42,10 @@ export const deleteIncome = async (req, res) => {
   try {
     const id = req.params.id;
     const income = await IncomeModel.findByIdAndDelete(id);
+    const userId = income.userId;
+    const user = await User.findById(userId);
+    user.totalIncomes = user.totalIncomes - parseInt(income.amount);
+    user.save();
     res.status(200).json({ message: "Income Deleted" });
   } catch (error) {
     console.log(error);

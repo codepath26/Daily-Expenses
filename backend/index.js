@@ -2,10 +2,11 @@ import dotenv from "dotenv";
 import express from "express";
 import db from "./db/database.js";
 
-import IncomeRoutes from "./routes/Income.js";
+import IncomeRoutes from "./routes/IncomeRoutes.js";
 import PaymentRoutes from "./routes/PaymentRoutes.js";
-import ExpenseRoutes from "./routes/Expense.js";
-import userRoutes from './routes/user.js'
+import ExpenseRoutes from "./routes/ExpenseRoutes.js";
+import userRoutes from "./routes/user.js";
+import LeaderboardRoutes from "./routes/LeaderboardRoutes.js";
 
 import cors from "cors";
 dotenv.config();
@@ -22,6 +23,7 @@ app.get("/api/getkey", (req, res) =>
 );
 app.use(IncomeRoutes);
 app.use(ExpenseRoutes);
+app.use(LeaderboardRoutes);
 
 const server = async () => {
   await db();

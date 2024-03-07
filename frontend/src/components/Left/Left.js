@@ -27,9 +27,9 @@ function Left() {
       <ul className="flex md:flex-col  flex-col sm:flex-row flex-wrap ps-2 md:mt-4 my-4  ">
         <NavLink
           className={({ isActive }) =>
-            `px-2 my-2  text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
+            `px-2 my-2   text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
               isActive
-                ? "relative  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
+                ? "relative  text-blue-900 before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
                 : ""
             }`
           }
@@ -41,9 +41,9 @@ function Left() {
         {isPremium && (
           <NavLink
             className={({ isActive }) =>
-              `px-2 my-2  text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
+              `px-2 my-2   text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
                 isActive
-                  ? "relative  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
+                  ? "relative text-blue-900  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
                   : ""
               }`
             }
@@ -55,9 +55,9 @@ function Left() {
         )}
         <NavLink
           className={({ isActive }) =>
-            `px-2 my-2  text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
+            `px-2 my-2   text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
               isActive
-                ? "relative  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
+                ? "relative  text-blue-900 before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
                 : ""
             }`
           }
@@ -68,9 +68,9 @@ function Left() {
         </NavLink>
         <NavLink
           className={({ isActive }) =>
-            `px-2 my-2  text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
+            `px-2 my-2   text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
               isActive
-                ? "relative  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
+                ? "relative  text-blue-900 before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
                 : ""
             }`
           }
@@ -82,9 +82,9 @@ function Left() {
         {isPremium && (
           <NavLink
             className={({ isActive }) =>
-              `px-2 my-2  text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
+              `px-2 my-2   text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
                 isActive
-                  ? "relative  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
+                  ? "relative  text-blue-900 before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
                   : ""
               }`
             }
@@ -98,9 +98,9 @@ function Left() {
         {isPremium && (
           <NavLink
             className={({ isActive }) =>
-              `px-2 my-2  text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
+              `px-2 my-2   text-gray-600 text-xl hover:font-bold transition-all duration-400 ease-in-out cursor-pointer  ${
                 isActive
-                  ? "relative  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
+                  ? "relative text-blue-900  before:bg-blue-900 before:w-[5px] before:h-full before:border-r before:rounded-r-full before:absolute before:left-0 before:top-0"
                   : ""
               }`
             }
