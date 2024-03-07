@@ -13,9 +13,14 @@ export const GlobalContextProvider = ({ children }) => {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [isPremium, setIsPremium] = useState(!!isUserPremium);
   const [loggedUser, setLoggeduser] = useState(loggedUserDetails);
+  const [leaderboard, setLeaderboard] = useState(null);
   const token = loggedUser?.token;
   console.log(typeof loggedUser);
   //  income Handlers
+
+  const leaderboardHandler = useCallback((data) => {
+    setLeaderboard(data);
+  }, []);
 
   const premiumUserHandler = () => {
     localStorage.setItem("expensePremium", true);
@@ -184,6 +189,8 @@ export const GlobalContextProvider = ({ children }) => {
       value={{
         addIncome,
         loggedUser,
+        leaderboard,
+        leaderboardHandler,
         loginHandler,
         logoutHandler,
         isPremium,

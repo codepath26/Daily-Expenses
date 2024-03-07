@@ -5,21 +5,21 @@ import User from "../models/userModel.js";
 
 const authenticateUser = async (req, res, next) => {
   try {
-    console.log("startted");
-     console.log(req.headers)
+    // console.log("startted");
+    // console.log(req.headers);
     const token = req.headers["authorization"];
     const secretkey = process.env.SECERET_KEY;
-    console.log(token)
+    // console.log(token);
 
     const data = jwt.verify(token, secretkey);
-    console.log(data)
+    // console.log(data);
     const user = await User.findById(data.id);
-    console.log(user);
+    // console.log(user);
     if (user) {
       req.user = user;
       next();
     } else {
-      console.log("user not found");
+      // console.log("user not found");
       return res.status(404).json({ message: "user is not found" });
     }
   } catch (err) {

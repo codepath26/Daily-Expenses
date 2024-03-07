@@ -32,6 +32,8 @@ export const signupHandler = async (req, res) => {
         email,
         password: IncreptedPass,
         pic,
+        totalExpenses: 0,
+        totalIncomes: 0,
       });
       if (user) {
         res.status(200).json({

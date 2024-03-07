@@ -19,6 +19,18 @@ const userSchema = Schema(
       type: String,
       required: true,
     },
+    isPremiumUser: {
+      type: Boolean,
+      default: false,
+    },
+    totalExpenses: {
+      type: Number,
+      required: true,
+    },
+    totalIncomes: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );

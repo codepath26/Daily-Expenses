@@ -1,14 +1,26 @@
 import axios from "axios";
 import React from "react";
+import { useGlobalContext } from "../../Context/globalContext";
 
 function PaymentGate() {
+  const { loggedUser } = useGlobalContext();
+  const token = loggedUser?.token;
+  console.log(token);
+
   const paymentHandler = async () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_BASE_URL}/api/getkey`
     );
     const key = data.key;
+    console.log("token this", token);
     const response = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}/api/checkout`
+      `${process.env.REACT_APP_BASE_URL}/api/checkout`,
+      null, // you have to pass this as null othervise this body taken by the req.body and all header data go to the req.body ok so pass null
+      {
+        headers: {
+          Autherization: token,
+        },
+      }
     );
     console.log(response.data);
     const options = {
@@ -19,7 +31,7 @@ function PaymentGate() {
       description: "payment for the premium user to get the bonuses",
       image: "https://example.com/your_logo",
       order_id: response.data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      callback_url: `${process.env.REACT_APP_BASE_URL}/api/paymentverification`,
+      callback_url: `${process.env.REACT_APP_BASE_URL}/api/paymentverification?token=${token}`,
       prefill: {
         name: "Gaurav Kumar",
         email: "gaurav.kumar@example.com",
