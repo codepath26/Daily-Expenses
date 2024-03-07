@@ -4,23 +4,25 @@ import PaymentGate from "../PremiumUser/PaymentGate";
 import { NavLink } from "react-router-dom";
 
 function Left() {
-  const { isPremium } = useGlobalContext();
-
+  const { loggedUser, isPremium } = useGlobalContext();
+  console.log(loggedUser, "this is the logged user");
   return (
     <div className=" md:w-[20%] w-full md:h-[100vh] relative  border-[3px]  border-white bg-gray-200   rounded-[20px]">
       <div className="flex  md:justify-normal justify-center md:flex-row flex-col items-center gap-[1rem] md:ps-2">
-        <div className="w-[80px] h-[80px]  rounded-full border bg-pink-100  shadow-md">
+        <div className="w-20 h-20  rounded-full border bg-pink-100  shadow-md">
           <img
             className="object-cover h-full w-full"
-            src={process.env.PUBLIC_URL + "/Images/man.png"}
+            src={loggedUser?.pic}
             alt="avtar"
           />
         </div>
-        <div className="">
-          <h2>Parth Thakor</h2>
-          <p className="font-thin">Your Money</p>
+        <div className=" w-[50%] text-center">
+          <h2>
+            {loggedUser?.name[0].toUpperCase() + loggedUser.name.slice(1)}
+          </h2>
         </div>
       </div>
+      <p className="tex-thin italic text-sm p-1">Email: {loggedUser?.email}</p>
       <div className="m-1  p-1 ">{!isPremium && <PaymentGate />}</div>
       <ul className="flex md:flex-col  flex-col sm:flex-row flex-wrap ps-2 md:mt-4 my-4  ">
         <NavLink

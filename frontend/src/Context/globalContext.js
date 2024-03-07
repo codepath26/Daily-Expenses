@@ -3,25 +3,45 @@ import axios from "axios";
 const GlobalContext = createContext();
 
 export const GlobalContextProvider = ({ children }) => {
+  const isUserPremium = localStorage.getItem("expensePremium");
+  const loggedUserDetails =
+    JSON.parse(localStorage.getItem("expenseUser")) || null;
   const [incomes, setIncomes] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [error, setError] = useState(null);
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
-  const [isPremium, setIsPremium] = useState(false);
-
+  const [isPremium, setIsPremium] = useState(!!isUserPremium);
+  const [loggedUser, setLoggeduser] = useState(loggedUserDetails);
+  const token = loggedUser?.token;
+  console.log(typeof loggedUser);
   //  income Handlers
 
   const premiumUserHandler = () => {
+    localStorage.setItem("expensePremium", true);
     setIsPremium(true);
+  };
+  const loginHandler = useCallback((user) => {
+    setLoggeduser(user);
+  }, []);
+  const logoutHandler = () => {
+    localStorage.removeItem("expenseUser");
+
+    setLoggeduser(null);
   };
 
   const addIncome = async (income) => {
     try {
       // console.log("this is the income object", income);
+      // console.log(token);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/income`,
-        income
+        income,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       );
       setIncomes((prevIncome) => {
         // return prevIncome.push(response.data.income);
@@ -36,7 +56,12 @@ export const GlobalContextProvider = ({ children }) => {
   const getIncomes = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/income`
+        `${process.env.REACT_APP_BASE_URL}/income`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       );
       // console.log(response.data);
       setIncomes(response.data);
@@ -49,12 +74,19 @@ export const GlobalContextProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [token]);
 
   const deleteIncome = async (id, amount) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_BASE_URL}/income/${id}`);
-      // console.log(response.data);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/income/${id}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      console.log(response.data);
       setIncomes((prev) => {
         return prev.filter((income) => {
           return income._id !== id;
@@ -73,7 +105,12 @@ export const GlobalContextProvider = ({ children }) => {
       // console.log("this is the income object", expense) ;
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/expense`,
-        expense
+        expense,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       );
       setExpenses((prevExpense) => {
         // return prevIncome.push(response.data.income);
@@ -89,8 +126,14 @@ export const GlobalContextProvider = ({ children }) => {
 
   const getExpenses = useCallback(async () => {
     try {
+      console.log(token, "thisi si the token from getexpense");
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/expense`
+        `${process.env.REACT_APP_BASE_URL}/expense`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       );
 
       console.log("this  is data i got", response.data);
@@ -101,13 +144,18 @@ export const GlobalContextProvider = ({ children }) => {
       );
       setTotalExpenses(FetchtotalExpenses);
     } catch (error) {
+      console.log("error");
       console.log(error);
     }
-  }, []);
+  }, [token]);
 
   const deleteExpense = async (id, amount) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_BASE_URL}/expense/${id}`);
+      await axios.delete(`${process.env.REACT_APP_BASE_URL}/expense/${id}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
       // console.log(response.data);
       setExpenses((prev) => {
         return prev.filter((expense) => {
@@ -130,11 +178,14 @@ export const GlobalContextProvider = ({ children }) => {
     });
     return history.slice(0, 3);
   };
-
+  console.log("global context render");
   return (
     <GlobalContext.Provider
       value={{
         addIncome,
+        loggedUser,
+        loginHandler,
+        logoutHandler,
         isPremium,
         premiumUserHandler,
         getIncomes,
