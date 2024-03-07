@@ -9,10 +9,11 @@ export const addExpense = async (req, res) => {
       description,
       category,
       date,
+      userId: req.user._id,
     });
 
     const newExpense = await expense.save();
-    res.status(200).json({ expense : newExpense   });
+    res.status(200).json({ expense: newExpense });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "something went Wrong" });
@@ -21,8 +22,13 @@ export const addExpense = async (req, res) => {
 
 export const getExpenses = async (req, res) => {
   try {
-    const fullExpenses = await ExpenseModel.find().sort({ createdAt: -1 });
+    const id = req.user._id;
+
+    const fullExpenses = await ExpenseModel.find({ userId: id }).sort({
+      createdAt: -1,
+    });
     res.status(200).json(fullExpenses);
+    // res.status(200).json("completed");
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
   }
@@ -55,6 +61,6 @@ export const updateExpense = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({message : "Internal Server Error"});
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };

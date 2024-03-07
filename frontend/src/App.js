@@ -14,33 +14,54 @@ import Expenses from "./components/Right/Expenses.js";
 import PaymentSuccess from "./components/PremiumUser/PaymentSuccess.js";
 import Leaderboard from "./components/Leaderboard/Leaderboard.js";
 import Welcome from "./components/Welcome.js";
+import { useGlobalContext } from "./Context/globalContext.js";
+import Signup from "./components/Signup/Signup.js";
+import Login from "./components/Login/Login.js";
 
 function App() {
+  console.log("app is render");
+  const { loggedUser } = useGlobalContext();
+  console.log(loggedUser);
+
   return (
     <>
       <Router>
-        <MovingBackground />
-        <div
-          className={`p-2 flex md:flex-row flex-col w-full md:h-screen overflow-auto md:overflow-hidden`}
-        >
-          <Left />
-          <div className="md:w-[90%] w-full relative  pt-3 md:pt-0 md:m-4  mx-auto">
-            <div className="border-[3px] border-white bg-gray-200 bg-opacity-80  rounded-[20px]">
-              <Routes>
-                <Route path="/" element={<Navigate to="/dashboard" />} />
-                <Route path="/deshboard" element={<Dashboard />} />
-                <Route path="/income" element={<Income />} />
-                <Route path="/transaction" element={<Transactions />} />
-                <Route path="/expenses" element={<Expenses />} />
-                <Route path="/paymentsuccess" element={<PaymentSuccess />} />
-                <Route path="/leaderboard" element={<Leaderboard />} />
-                <Route path="*" element={<Welcome />} />
-                <Route />
-                <Route />
-              </Routes>
+        {loggedUser ? (
+          <>
+            <MovingBackground />
+            <div
+              className={`p-2 flex md:flex-row flex-col w-full md:h-screen overflow-auto md:overflow-hidden`}
+            >
+              <Left />
+              <div className="md:w-[90%] w-full relative  pt-3 md:pt-0 md:m-4  mx-auto">
+                <div className="border-[3px] border-white bg-gray-200 bg-opacity-80  rounded-[20px]">
+                  <Routes>
+                    <Route path="/" element={<Navigate to="/dashboard" />} />
+                    <Route path="/deshboard" element={<Dashboard />} />
+                    <Route path="/income" element={<Income />} />
+                    <Route path="/transaction" element={<Transactions />} />
+                    <Route path="/expenses" element={<Expenses />} />
+                    <Route
+                      path="/paymentsuccess"
+                      element={<PaymentSuccess />}
+                    />
+                    <Route path="/leaderboard" element={<Leaderboard />} />
+                    <Route path="*" element={<Welcome />} />
+                    <Route />
+                    <Route />
+                  </Routes>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        ) : (
+          <Routes>
+            <Route path="/" element={<Navigate to="/signup" />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<Navigate to="/signup" />} />
+          </Routes>
+        )}
       </Router>
     </>
   );
