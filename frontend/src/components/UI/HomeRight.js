@@ -38,7 +38,7 @@ function HomeRight({ FormType, goToMessage, goto }) {
             blankAlert1();
           } else {
             try {
-              await axios.post(`${process.env.REACT_APP_BASE_URL}/signup`, {
+              await axios.post(`${process.env.REACT_APP_BACKEND_URL}/signup`, {
                 name: username,
                 email,
                 password: pass,
@@ -63,7 +63,7 @@ function HomeRight({ FormType, goToMessage, goto }) {
         } else {
           try {
             const response = await axios.post(
-              `${process.env.REACT_APP_BASE_URL}/login`,
+              `${process.env.REACT_APP_BACKEND_URL}/login`,
               {
                 email,
                 password: pass,

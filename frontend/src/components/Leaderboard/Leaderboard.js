@@ -15,7 +15,7 @@ function Leaderboard() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/leaderboard`,
+        `${process.env.REACT_APP_BACKEND_URL}/leaderboard`,
         {
           headers: {
             Authorization: token,

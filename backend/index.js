@@ -9,9 +9,11 @@ import userRoutes from "./routes/user.js";
 import LeaderboardRoutes from "./routes/LeaderboardRoutes.js";
 
 import cors from "cors";
+import helmet from "helmet";
 dotenv.config();
 
 const app = express();
+app.use(helmet());
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));

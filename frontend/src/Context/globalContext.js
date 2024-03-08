@@ -40,7 +40,7 @@ export const GlobalContextProvider = ({ children }) => {
       // console.log("this is the income object", income);
       // console.log(token);
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/income`,
+        `${process.env.REACT_APP_BACKEND_URL}/income`,
         income,
         {
           headers: {
@@ -61,7 +61,7 @@ export const GlobalContextProvider = ({ children }) => {
   const getIncomes = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/income`,
+        `${process.env.REACT_APP_BACKEND_URL}/income`,
         {
           headers: {
             Authorization: token,
@@ -84,7 +84,7 @@ export const GlobalContextProvider = ({ children }) => {
   const deleteIncome = async (id, amount) => {
     try {
       const response = await axios.delete(
-        `${process.env.REACT_APP_BASE_URL}/income/${id}`,
+        `${process.env.REACT_APP_BACKEND_URL}/income/${id}`,
         {
           headers: {
             Authorization: token,
@@ -109,7 +109,7 @@ export const GlobalContextProvider = ({ children }) => {
     try {
       // console.log("this is the income object", expense) ;
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/expense`,
+        `${process.env.REACT_APP_BACKEND_URL}/expense`,
         expense,
         {
           headers: {
@@ -133,7 +133,7 @@ export const GlobalContextProvider = ({ children }) => {
     try {
       console.log(token, "thisi si the token from getexpense");
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/expense`,
+        `${process.env.REACT_APP_BACKEND_URL}/expense`,
         {
           headers: {
             Authorization: token,
@@ -156,7 +156,7 @@ export const GlobalContextProvider = ({ children }) => {
 
   const deleteExpense = async (id, amount) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_BASE_URL}/expense/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/expense/${id}`, {
         headers: {
           Authorization: token,
         },
