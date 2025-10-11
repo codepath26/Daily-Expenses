@@ -4,8 +4,8 @@ import PaymentGate from "../PremiumUser/PaymentGate";
 import { NavLink } from "react-router-dom";
 
 function Left() {
-  const { loggedUser, isPremium } = useGlobalContext();
-  console.log(loggedUser, "this is the logged user");
+  const { loggedUser, isPremium, logoutHandler } = useGlobalContext();
+  console.log(isPremium, "this is the logged user");
   return (
     <div className=" md:w-[20%] w-full md:h-[100vh] relative  border-[3px]  border-white bg-gray-200   rounded-[20px]">
       <div className="flex  md:justify-normal justify-center md:flex-row flex-col items-center gap-[1rem] md:ps-2">
@@ -113,7 +113,9 @@ function Left() {
       </ul>
 
       <div className="md:m-0   text-center my-4  absolute   w-full bottom-5 ">
-        <li className="md:m-0 ">{signout} Sign Out</li>
+        <li className="md:m-0 cursor-pointer" onClick={logoutHandler}>
+          {signout} Sign Out
+        </li>
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ export const GlobalContextProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
-  const [isPremium, setIsPremium] = useState(!!isUserPremium);
+  const [isPremium, setIsPremium] = useState(isUserPremium);
   const [loggedUser, setLoggeduser] = useState(loggedUserDetails);
   const [leaderboard, setLeaderboard] = useState(null);
   const token = loggedUser?.token;
@@ -33,6 +33,7 @@ export const GlobalContextProvider = ({ children }) => {
     localStorage.removeItem("expenseUser");
 
     setLoggeduser(null);
+    localStorage.removeItem("expensePremium");
   };
 
   const addIncome = async (income) => {

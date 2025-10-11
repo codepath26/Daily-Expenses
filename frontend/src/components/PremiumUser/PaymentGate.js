@@ -18,7 +18,7 @@ function PaymentGate() {
       null, // you have to pass this as null othervise this body taken by the req.body and all header data go to the req.body ok so pass null
       {
         headers: {
-          Autherization: token,
+          Authorization: token,
         },
       }
     );
