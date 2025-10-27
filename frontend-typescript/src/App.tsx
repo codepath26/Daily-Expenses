@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router";
-import Signup from "./components/UserDeatils/Signup";
-import Login from "./components/UserDeatils/Login";
-import UseGlobalContext from "./components/GlobalContext";
+import Signup from "./components/UserDeatils/singup/SignUp";
+import Login from "./components/UserDeatils/login/Login";
+import UseGlobalContext from "./context/GlobalContext";
 
 export default function App() {
   const { loggedUser, loading } = UseGlobalContext();
