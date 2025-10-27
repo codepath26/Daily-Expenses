@@ -38,15 +38,12 @@ function UserCommon({ FormType, goToMessage, goto }: UserCommonTypes) {
             blankAlert1();
           } else {
             try {
-              await axios.post(
-                `${import.meta.env.REACT_APP_BACKEND_URL}/signup`,
-                {
-                  name: username,
-                  email,
-                  password: pass,
-                  pic,
-                }
-              );
+              await axios.post(`${import.meta.env.VITE_BACKEND_URL}/signup`, {
+                name: username,
+                email,
+                password: pass,
+                pic,
+              });
               // console.log(response.data);
               if (fileref.current) {
                 fileref.current.value = "";
@@ -70,7 +67,7 @@ function UserCommon({ FormType, goToMessage, goto }: UserCommonTypes) {
         } else {
           try {
             const response = await axios.post(
-              `${import.meta.env.REACT_APP_BACKEND_URL}/login`,
+              `${import.meta.env.VITE_BACKEND_URL}/login`,
               {
                 email,
                 password: pass,
