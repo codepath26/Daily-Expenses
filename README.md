@@ -7,3 +7,5 @@ Budget alerts (email or UI warning)
 Multi-user shared expenses (like Splitwise 🔥)
 Search with debouncing
 API rate limiting / security enhancements
+
+What are the real life example of the local storage and session storage?
