@@ -1,147 +1,133 @@
 import React, { useRef, useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import { Link, useNavigate } from "react-router-dom";
+import type { FormPropsTypes } from "../../types/auth.type";
 
-interface props {
-    type: "login" | "signup"
-}
-const AuthForm = ({ type }: props) => {
-    const { signup, login, loading, error } = useAuth()
-    const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
+
+
+const AuthForm = ({ type }: FormPropsTypes) => {
+    const { handleSubmit, loading, error, validationAlert, uploadImage, profilePic } = useAuth();
+
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [show, setShow] = useState(false);
-    const fileref = useRef<HTMLInputElement>(null);
-
-    const navigate = useNavigate();
+    const fileRef = useRef<HTMLInputElement>(null);
 
 
-    const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-        e.preventDefault();
+
+    const formSubmissionHandler = (e: React.SyntheticEvent<HTMLFormElement>) => {
         if (type === "signup") {
-            await signup({ name, email, password });
-            navigate("/login")
+            const formData = { name, email, password, confirmPassword, profilePic }
+            handleSubmit({ e, type, formData })
         } else {
-            const res = await login({ email, password })
-            if (res) navigate('/dashboard')
+            const formData = { email, password };
+            handleSubmit({ e, type, formData });
         }
     }
 
-
     return (
-        <>
-            <form onSubmit={(e: React.SyntheticEvent<HTMLFormElement>) => { handleSubmit(e) }} className="h-screen w-full bg-[url('assets/bg.jpg')] bg-cover bg-center p-2 md:w-full">
-                <div className="h-full w-full py-2">
-                    <h1 className="text-center text-3xl font-bold text-green-800">
-                        {type} Page
-                    </h1>
-                    <div className="mt-10 flex h-full flex-col items-center">
-                        <form className="flex w-[90%] flex-col md:w-[50%]">
-                            {type === "signup" && (
-                                <div className="mb-5 w-full rounded-md border border-black bg-none">
-                                    <input
-                                        required
-                                        type="text"
-                                        placeholder="Username"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        className="h-full w-full rounded-md bg-transparent p-2 text-white outline-none"
+        <div className="min-h-screen bg-[#D8B4BC] flex items-center justify-center">
+            <div className="w-full max-w-md bg-white shadow-xl rounded-xl p-8 border border-gray-200">
+
+                <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">
+                    {type === "signup" ? "Create Account" : "Login"}
+                </h2>
+                <p className="bg-red-600 text-center  my-2 text-white rounded-lg ">
+                    {validationAlert}
+                </p>
+
+                <form onSubmit={(e: React.SyntheticEvent<HTMLFormElement>) => formSubmissionHandler(e)} className="space-y-4">
+
+                    {type === "signup" && (
+                        <input
+                            type="text"
+                            placeholder="Username"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                        />
+                    )}
+
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                    />
+
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                    />
+
+                    {type === "signup" && (
+                        <input
+                            type="password"
+                            placeholder="Confirm Password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                        />
+                    )}
+
+                    {type === "signup" && (
+                        <label className="block w-full cursor-pointer border border-gray-300 rounded-lg text-center py-2 hover:bg-gray-50">
+
+                            <input
+                                ref={fileRef}
+                                type="file"
+                                accept="image/*"
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => uploadImage(e)}
+                                className="hidden"
+                            />
+
+                            {profilePic ? (
+                                <div className="flex items-center justify-center">
+                                    <img
+                                        src={profilePic}
+                                        alt="Profile"
+                                        className="w-20 h-20 rounded-full object-cover border"
                                     />
                                 </div>
+                            ) : (
+                                <span className="text-gray-500">Upload Profile Picture</span>
                             )}
 
-                            <div className="mb-5 w-full rounded-md border border-black bg-none">
-                                <input
-                                    required
-                                    type="email"
-                                    placeholder="Email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="h-full w-full rounded-md bg-transparent p-2 text-white outline-none"
-                                />
-                            </div>
+                        </label>
+                    )}
 
-                            <div className="relative mb-5 w-full rounded-md border border-black bg-none">
-                                <input
-                                    required
-                                    type={!show ? "text" : "password"}
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder={
-                                        type === "signup" ? "Create password" : "Enter Password"
-                                    }
-                                    className="h-full w-full rounded-md bg-transparent p-2 text-white outline-none"
-                                />
-                                <span
-                                    className="absolute right-2 top-2 cursor-pointer"
-                                    onClick={() => setShow(!show)}
-                                >
-                                    {show ? (
-                                        <i className="fa-solid fa-eye" />
-                                    ) : (
-                                        <i className="fa-solid fa-eye-slash" />
-                                    )}
-                                </span>
-                            </div>
+                    {error && (
+                        <p className="text-red-500 text-sm">{error}</p>
+                    )}
 
-                            {type === "signup" && (
-                                <div className="mb-5 w-full rounded-md border border-black bg-none">
-                                    <input
-                                        required
-                                        type={!show ? "text" : "password"}
-                                        value={confirmPassword}
-                                        onChange={(e) => setConfirmPassword(e.target.value)}
-                                        placeholder="Confirm password"
-                                        className="h-full w-full rounded-md bg-transparent p-2 text-white outline-none"
-                                    />
-                                    <i className="bx bx-hide eye-icon" />
-                                </div>
-                            )}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+                    >
+                        {loading
+                            ? "Processing..."
+                            : type === "signup"
+                                ? "Signup"
+                                : "Login"}
+                    </button>
+                </form>
 
-                            {type === "signup" && (
-                                <div className="mb-5 w-full rounded-md border border-black bg-none">
-                                    <input
-                                        required
-                                        ref={fileref}
-                                        type="file"
-                                        accept="image/*"
-                                        placeholder="Profile Pic"
-                                        onChange={(e) => {
-                                            // postDetails(e.target.files?.[0]);
-                                        }}
-                                        className="h-full w-full rounded-md bg-transparent p-2 text-white outline-none"
-                                    />
-                                    <i className="bx bx-hide eye-icon" />
-                                </div>
-                            )}
+                <p className="text-center text-sm text-gray-500 mt-4">
+                    Track your{" "}
+                    <span className="text-green-600 font-medium">income</span>{" "}
+                    and manage your{" "}
+                    <span className="text-red-600 font-medium">expenses</span>{" "}
+                    smarter.
+                </p>
 
-                            <div className="w-full bg-none py-2 text-center">
-                                {loading ? (
-                                    <h1>Please wait...</h1>
-                                ) : (
-                                    <button
-                                        type="submit"
-                                        className="rounded-md border bg-green-700 px-2 py-1 text-white hover:bg-green-600"
-                                    >
-                                        {type}
-                                    </button>
-                                )}
-                            </div>
-                        </form>
-
-                        <div className="mt-10 text-lg font-bold text-green-500 transition-all duration-300 hover:text-white">
-                            {/* <span>
-                                <Link to={goto} className="underline underline-offset-2">
-                                    {goToMessage}
-                                </Link>
-                            </span> */}
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </>
-    )
-}
+            </div>
+        </div>
+    );
+};
 
 export default AuthForm;
