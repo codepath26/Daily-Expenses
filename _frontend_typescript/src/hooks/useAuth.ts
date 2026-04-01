@@ -29,8 +29,6 @@ const useAuth = () => {
             setLoading(false)
         }
     }
-
-
     const login = async (data: LoginPayload) => {
         try {
             setLoading(true)
@@ -72,10 +70,7 @@ const useAuth = () => {
         }
     };
 
-
-
     const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        debugger
         const file = e.target.files?.[0];
         if (!file) return;
 
@@ -116,8 +111,7 @@ const useAuth = () => {
             return null;
         }
     };
-
-
+    
     return { signup, login, handleSubmit, loading, error, validationAlert, uploadImage ,profilePic}
 }
 
