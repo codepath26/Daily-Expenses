@@ -2,7 +2,7 @@ import express , {Express , Request,Response}  from "express";
 import cors from "cors"
 import dotenv from "dotenv"
 import helmet from "helmet";
-import UserRoutes from "./routes/userRoutes.ts"
+import UserRoutes from "./routes/userRoutes.js"
 import DBConnection from "./database/database.js";
 
 dotenv.config();

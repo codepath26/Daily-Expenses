@@ -1,34 +1,53 @@
-import React, { useState } from "react";
+import { useState, type ReactNode } from "react";
+import { UserContext, type User } from "./AuthContext";
 import type { LoginPayload, SignupPayload } from "../types/auth.type";
 import { loginUser, signupUser } from "../api/authapi";
-import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png"];
 
-const useAuth = () => {
+interface ChildrenTypes {
+    children: ReactNode
+}
 
+export interface AuthResponse {
+    success: boolean;
+    message: string;
+    user?: User;
+    token?: string;
+}
+const AuthProvider = ({ children }: ChildrenTypes) => {
+    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [validationAlert, setValidationAlert] = useState("");
-     const [profilePic, setProfilePic] = useState<string | null>(null);
-    const navigate = useNavigate();
+    const [profilePic, setProfilePic] = useState<string | null>(null);
+
+
+
 
     const signup = async (data: SignupPayload) => {
         try {
             setLoading(true);
             setError(null);
             const res = await signupUser(data);
-            return res;
+            const userData = res.user;
+            setUser(userData);
         } catch (error: unknown) {
-            setLoading(false);
-            setError("this")
+
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Something went wrong");
+            }
 
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
+
     const login = async (data: LoginPayload) => {
         try {
             setLoading(true)
@@ -53,20 +72,17 @@ const useAuth = () => {
         e.preventDefault();
 
         if (type === "signup") {
-            const userData = formData as SignupPayload;
+            const userData = { ...formData, pic: profilePic } as SignupPayload;
             const { password, confirmPassword } = userData
             if (password !== confirmPassword) {
                 setValidationAlert("Please Check The Password");
                 blankAlert();
                 return;
             }
-
             await signup(userData);
-            navigate("/login");
         } else {
             const userData = formData as LoginPayload;
-            const res = await login(userData);
-            if (res) navigate("/dashboard");
+                await login(userData);
         }
     };
 
@@ -111,9 +127,12 @@ const useAuth = () => {
             return null;
         }
     };
-    
-    return { signup, login, handleSubmit, loading, error, validationAlert, uploadImage ,profilePic}
+
+
+    return <UserContext.Provider value={{ user, setUser, handleSubmit, loading, error, validationAlert, uploadImage, profilePic }}>
+        {children}
+    </UserContext.Provider>
+
 }
 
-
-export default useAuth;
+export default AuthProvider;

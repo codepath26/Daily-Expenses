@@ -1,27 +1,34 @@
-import React, { useRef, useState } from "react";
-import useAuth from "../../hooks/useAuth";
+import React, { useContext, useRef, useState } from "react";
+
 import type { FormPropsTypes } from "../../types/auth.type";
+import { UserContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 
 
 const AuthForm = ({ type }: FormPropsTypes) => {
-    const { handleSubmit, loading, error, validationAlert, uploadImage, profilePic } = useAuth();
+    const context = useContext(UserContext);
+    if(!context) throw new Error("UserContext must be used inside the AuthProvider.")
 
+    const {handleSubmit, loading, error, validationAlert, uploadImage, profilePic } = context;
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const fileRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate()
 
 
 
     const formSubmissionHandler = (e: React.SyntheticEvent<HTMLFormElement>) => {
         if (type === "signup") {
             const formData = { name, email, password, confirmPassword, profilePic }
-            handleSubmit({ e, type, formData })
+           const res =  handleSubmit({ e, type, formData })
+           if(res)  navigate("/login")
         } else {
             const formData = { email, password };
-            handleSubmit({ e, type, formData });
+            const res = handleSubmit({ e, type, formData });
+            if(res) navigate("dashboard")
         }
     }
 
