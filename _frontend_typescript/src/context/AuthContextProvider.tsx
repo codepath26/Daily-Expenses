@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { UserContext, type User } from "./AuthContext";
 import type { LoginPayload, SignupPayload } from "../types/auth.type";
 import { loginUser, signupUser } from "../api/authapi";
@@ -24,6 +24,11 @@ const AuthProvider = ({ children }: ChildrenTypes) => {
     const [error, setError] = useState<string | null>(null);
     const [validationAlert, setValidationAlert] = useState("");
     const [profilePic, setProfilePic] = useState<string | null>(null);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const fileRef = useRef<HTMLInputElement>(null);
 
 
 
@@ -35,23 +40,27 @@ const AuthProvider = ({ children }: ChildrenTypes) => {
             const res = await signupUser(data);
             const userData = res.user;
             setUser(userData);
+            return true;
         } catch (error: unknown) {
 
             if (error instanceof Error) {
-                setError(error.message);
+                setValidationAlert(error.message)
+                return false;
             } else {
-                setError("Something went wrong");
+                setValidationAlert("Something went wrong");
+                return  false;
             }
 
         } finally {
             setLoading(false);
+            return false;
         }
     };
 
     const login = async (data: LoginPayload) => {
         try {
             setLoading(true)
-            setError(null)
+            setValidationAlert("");
             const res = await loginUser(data);
             return res;
         } catch (error: unknown) {
@@ -68,21 +77,39 @@ const AuthProvider = ({ children }: ChildrenTypes) => {
         }, 2000);
     }
 
-    const handleSubmit = async ({ e, type, formData }: { e: React.SyntheticEvent<HTMLFormElement>, type: "signup" | "login", formData: SignupPayload | LoginPayload }) => {
+    const handleSubmit = async ({ e, type, formData }: { e: React.SyntheticEvent<HTMLFormElement>, type: "signup" | "login", formData: SignupPayload | LoginPayload }): Promise<boolean> => {
         e.preventDefault();
 
         if (type === "signup") {
             const userData = { ...formData, pic: profilePic } as SignupPayload;
-            const { password, confirmPassword } = userData
-            if (password !== confirmPassword) {
-                setValidationAlert("Please Check The Password");
-                blankAlert();
-                return;
+            const { name, email, password, confirmPassword, pic } = userData
+
+            if (!(/^[a-zA-Z0-9_]{3,30}$/.test(name))) {
+                setValidationAlert("Username must be 3–30 characters and may contain letters, numbers, and underscores (_).")
+                 blankAlert();
+                return false;
             }
-            await signup(userData);
+            if (!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) {
+                setValidationAlert("Enter valid email");
+                  blankAlert();
+                return false;
+            }
+            if (password !== confirmPassword) {
+                setValidationAlert("Password doesn't match");
+                blankAlert();
+                return false;
+            }
+            if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,64}$/.test(password))) {
+                setValidationAlert("Password must be at least 8 characters and include uppercase, lowercase, number, and special character.")
+                blankAlert();
+                return false;
+            }
+           const res =  await signup(userData);
+           return  res ? true : false;
         } else {
             const userData = formData as LoginPayload;
-                await login(userData);
+            const res  = await login(userData);
+            return res ?  true : false;
         }
     };
 
@@ -129,7 +156,7 @@ const AuthProvider = ({ children }: ChildrenTypes) => {
     };
 
 
-    return <UserContext.Provider value={{ user, setUser, handleSubmit, loading, error, validationAlert, uploadImage, profilePic }}>
+    return <UserContext.Provider value={{ user, setUser, handleSubmit, loading, error, validationAlert, uploadImage, profilePic, name, setName, email, setEmail, password, setPassword, confirmPassword, setConfirmPassword, fileRef }}>
         {children}
     </UserContext.Provider>
 

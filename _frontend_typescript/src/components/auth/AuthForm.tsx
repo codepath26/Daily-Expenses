@@ -1,5 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
-
+import React, { useContext } from "react";
 import type { FormPropsTypes } from "../../types/auth.type";
 import { UserContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -10,24 +9,19 @@ const AuthForm = ({ type }: FormPropsTypes) => {
     const context = useContext(UserContext);
     if(!context) throw new Error("UserContext must be used inside the AuthProvider.")
 
-    const {handleSubmit, loading, error, validationAlert, uploadImage, profilePic } = context;
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const fileRef = useRef<HTMLInputElement>(null);
+    const {handleSubmit, loading, error, validationAlert, uploadImage, profilePic ,name,setName,email,setEmail,password,setPassword,confirmPassword,setConfirmPassword,fileRef } = context;
     const navigate = useNavigate()
 
 
 
-    const formSubmissionHandler = (e: React.SyntheticEvent<HTMLFormElement>) => {
+    const formSubmissionHandler = async(e: React.SyntheticEvent<HTMLFormElement>) => {
         if (type === "signup") {
             const formData = { name, email, password, confirmPassword, profilePic }
-           const res =  handleSubmit({ e, type, formData })
+           const res = await  handleSubmit({ e, type, formData })
            if(res)  navigate("/login")
         } else {
             const formData = { email, password };
-            const res = handleSubmit({ e, type, formData });
+            const res = await handleSubmit({ e, type, formData });
             if(res) navigate("dashboard")
         }
     }
@@ -47,15 +41,18 @@ const AuthForm = ({ type }: FormPropsTypes) => {
 
                     {type === "signup" && (
                         <input
+                            required
                             type="text"
                             placeholder="Username"
                             value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            onChange={(e) =>{ 
+                                setName(e.target.value)}}
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
                         />
                     )}
 
                     <input
+                        required
                         type="email"
                         placeholder="Email"
                         value={email}
@@ -64,6 +61,7 @@ const AuthForm = ({ type }: FormPropsTypes) => {
                     />
 
                     <input
+                        required
                         type="password"
                         placeholder="Password"
                         value={password}
@@ -73,6 +71,7 @@ const AuthForm = ({ type }: FormPropsTypes) => {
 
                     {type === "signup" && (
                         <input
+                            required
                             type="password"
                             placeholder="Confirm Password"
                             value={confirmPassword}
