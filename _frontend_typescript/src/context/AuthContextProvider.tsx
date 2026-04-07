@@ -1,9 +1,8 @@
 import { useRef, useState, type ReactNode } from "react";
 import { UserContext, type User } from "./AuthContext";
 import type { LoginPayload, SignupPayload } from "../types/auth.type";
-import { loginUser, signupUser } from "../api/authapi";
 
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png"];
@@ -29,7 +28,7 @@ const AuthProvider = ({ children }: ChildrenTypes) => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const fileRef = useRef<HTMLInputElement>(null);
-
+    const API = import.meta.env.VITE_API_URL as string;
 
 
 
@@ -37,8 +36,9 @@ const AuthProvider = ({ children }: ChildrenTypes) => {
         try {
             setLoading(true);
             setError(null);
-            const res = await signupUser(data);
-            const userData = res.user;
+            const response = await axios.post(`${API}/signup`, data);
+            const res = response.data;
+            const userData = res?.user;
             setUser(userData);
             return true;
         } catch (error: unknown) {
@@ -48,23 +48,39 @@ const AuthProvider = ({ children }: ChildrenTypes) => {
                 return false;
             } else {
                 setValidationAlert("Something went wrong");
-                return  false;
+                return false;
             }
 
         } finally {
             setLoading(false);
-            return false;
         }
     };
 
     const login = async (data: LoginPayload) => {
         try {
+            debugger
             setLoading(true)
             setValidationAlert("");
-            const res = await loginUser(data);
-            return res;
+            const res = await axios.post(`${API}/login`, data);
+            debugger
+            if(res.status === 200 && res.data.token){
+                const token = res.data.token; 
+                localStorage.setItem("UserAuthenticationToken",token);
+            }
+            return res.data.token ? true : false;
         } catch (error: unknown) {
-            setLoading(false);
+            if (axios.isAxiosError(error)) {
+                const message =
+                    error.response?.data?.message || "Server error occurred";
+                setValidationAlert(message)
+            }
+           else if (error instanceof Error) {
+                setValidationAlert(error.message)
+                return false;
+            } else {
+                setValidationAlert("Something went wrong");
+                return false;
+            }
 
         } finally {
             setLoading(false);
@@ -86,12 +102,12 @@ const AuthProvider = ({ children }: ChildrenTypes) => {
 
             if (!(/^[a-zA-Z0-9_]{3,30}$/.test(name))) {
                 setValidationAlert("Username must be 3–30 characters and may contain letters, numbers, and underscores (_).")
-                 blankAlert();
+                blankAlert();
                 return false;
             }
             if (!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) {
                 setValidationAlert("Enter valid email");
-                  blankAlert();
+                blankAlert();
                 return false;
             }
             if (password !== confirmPassword) {
@@ -104,12 +120,13 @@ const AuthProvider = ({ children }: ChildrenTypes) => {
                 blankAlert();
                 return false;
             }
-           const res =  await signup(userData);
-           return  res ? true : false;
+            const res = await signup(userData);
+            return res ? true : false;
         } else {
             const userData = formData as LoginPayload;
-            const res  = await login(userData);
-            return res ?  true : false;
+            const res = await login(userData);
+            console.log(res , "sfsjdf")
+            return res ? true : false;
         }
     };
 
@@ -121,11 +138,12 @@ const AuthProvider = ({ children }: ChildrenTypes) => {
             if (!ALLOWED_TYPES.includes(file.type)) {
                 throw new Error("Only JPG and PNG images are allowed.");
             }
-
+            
             if (file.size > MAX_FILE_SIZE) {
                 throw new Error("Image should be smaller than 2MB.");
             }
-
+            
+            setLoading(true);
             const formData = new FormData();
             formData.append("file", file);
             formData.append("upload_preset", "chat-app");
@@ -140,18 +158,23 @@ const AuthProvider = ({ children }: ChildrenTypes) => {
                 }
             );
             setProfilePic(response.data.secure_url);
+            setLoading(false);
 
         } catch (error: unknown) {
-
+            setLoading(false)
             if (axios.isAxiosError(error)) {
-                console.error("Axios Error:", error.response?.data || error.message);
+                setValidationAlert(error.response?.data || error.message);
             } else if (error instanceof Error) {
                 console.error("Error:", error.message);
+                setValidationAlert(error.message);
             } else {
+                setValidationAlert("something went wrong.");
                 console.error("Unexpected Error:", error);
             }
 
             return null;
+        }finally{
+            setLoading(false)
         }
     };
 

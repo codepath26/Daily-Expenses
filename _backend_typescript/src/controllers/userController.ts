@@ -55,7 +55,7 @@ export const loginHanlder = async (req :Request<{},{},LoginBody> , res : Respons
   try{
     const user = await User.findOne({email});
     if(!user){
-      res.status(404).json({message : "user not found"})
+      res.status(404).json({success : false ,message : "user not found"})
     }else{
       const isRightPass = await bcrypt.compare(password , user.password);
       if(isRightPass){

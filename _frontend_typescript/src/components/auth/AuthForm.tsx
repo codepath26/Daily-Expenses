@@ -1,28 +1,28 @@
 import React, { useContext } from "react";
 import type { FormPropsTypes } from "../../types/auth.type";
 import { UserContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 
 const AuthForm = ({ type }: FormPropsTypes) => {
     const context = useContext(UserContext);
-    if(!context) throw new Error("UserContext must be used inside the AuthProvider.")
+    if (!context) throw new Error("UserContext must be used inside the AuthProvider.")
 
-    const {handleSubmit, loading, error, validationAlert, uploadImage, profilePic ,name,setName,email,setEmail,password,setPassword,confirmPassword,setConfirmPassword,fileRef } = context;
+    const { handleSubmit, loading, error, validationAlert, uploadImage, profilePic, name, setName, email, setEmail, password, setPassword, confirmPassword, setConfirmPassword, fileRef } = context;
     const navigate = useNavigate()
 
 
 
-    const formSubmissionHandler = async(e: React.SyntheticEvent<HTMLFormElement>) => {
+    const formSubmissionHandler = async (e: React.SyntheticEvent<HTMLFormElement>) => {
         if (type === "signup") {
             const formData = { name, email, password, confirmPassword, profilePic }
-           const res = await  handleSubmit({ e, type, formData })
-           if(res)  navigate("/login")
+            const res = await handleSubmit({ e, type, formData })
+            if (res) navigate("/login")
         } else {
             const formData = { email, password };
             const res = await handleSubmit({ e, type, formData });
-            if(res) navigate("dashboard")
+            if (res) navigate("/dashboard")
         }
     }
 
@@ -33,7 +33,7 @@ const AuthForm = ({ type }: FormPropsTypes) => {
                 <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">
                     {type === "signup" ? "Create Account" : "Login"}
                 </h2>
-                <p className="bg-red-600 text-center  my-2 text-white rounded-lg ">
+                <p className="bg-red-600 text-center  my-2 text-white rounded-lg">
                     {validationAlert}
                 </p>
 
@@ -45,8 +45,9 @@ const AuthForm = ({ type }: FormPropsTypes) => {
                             type="text"
                             placeholder="Username"
                             value={name}
-                            onChange={(e) =>{ 
-                                setName(e.target.value)}}
+                            onChange={(e) => {
+                                setName(e.target.value)
+                            }}
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
                         />
                     )}
@@ -122,15 +123,13 @@ const AuthForm = ({ type }: FormPropsTypes) => {
                                 : "Login"}
                     </button>
                 </form>
-
-                <p className="text-center text-sm text-gray-500 mt-4">
-                    Track your{" "}
-                    <span className="text-green-600 font-medium">income</span>{" "}
-                    and manage your{" "}
-                    <span className="text-red-600 font-medium">expenses</span>{" "}
-                    smarter.
-                </p>
-
+                <div className="text-black  mt-10 hover:text-green-500 text-lg  font-bold transition-all duration-300 text-center">
+                    <span>
+                        <Link to={type === "signup" ? "/login" : "/signup"} className="underline  underline-offset-2">
+                            {type == "signup" ? "Already have an account? Login" : "Don't have an account? Signup"}
+                        </Link>
+                    </span>
+                </div>
             </div>
         </div>
     );
